@@ -21,12 +21,23 @@
 */
 stack *s_new()
 {
-  return NULL
+  stack *p = malloc(sizeof(stack));
+  if(p == NULL)return NULL;
+  p->top = NULL, p->bottom = NULL, p->cnt=0;
+  return p;
 }
 
 /* Free all storage used by stack */
 void s_free(stack *s)
-{}
+{
+  if(s == NULL)return ;
+  while(s->top!=s->bottom){
+    s_node *tmp = s->top->next;
+    free(s->top);
+    s->top = tmp;
+  }
+  free(s);
+}
 
 /*
   Attempt to insert element at top of stack.
@@ -35,6 +46,13 @@ void s_free(stack *s)
  */
 bool s_push(stack *s, int v)
 {
+  if(s == NULL)return false;
+  s_node *tmp = malloc(sizeof(s_node));
+  if(!tmp) return false;
+  tmp->value = v;
+  tmp->next = s->top;
+  s->top = tmp;
+  s->cnt++;
   return true;
 }
 
@@ -48,6 +66,11 @@ bool s_push(stack *s, int v)
  */
 bool s_pop(stack *s, int *vp)
 {
+  if(s == NULL || s->top == s->bottom)return false;
+  *vp = s->top->value;
+  s_node *tmp=s->top;
+  s->top = s->top->next, s->cnt--;
+  free(tmp);
   return true;
 }
 
@@ -57,7 +80,7 @@ bool s_pop(stack *s, int *vp)
  */
 int s_size(stack *s)
 {
-  return -1
+  return s == NULL ? 0 : s->cnt;
 }
 
 /*
@@ -66,7 +89,7 @@ int s_size(stack *s)
  */
 bool s_empty(stack *s)
 {
-  return true;
+  return s == NULL || s->top == s->bottom;
 }
 
 /*
@@ -76,5 +99,18 @@ bool s_empty(stack *s)
   calling push or pop).  Instead, it should modify
   the pointers in the existing data structure.
  */
-void s_reverse(stack *s)
-{}
+void s_reverse(stack *s){
+  // s_node *
+  if(s == NULL || s->top == s->bottom) return;
+  s_node *cur=s->top;
+  s_node *nxt=cur->next;
+  s_node *pre=NULL;
+  while(nxt != s->bottom){
+    cur->next = pre;
+    pre = cur;
+    cur = nxt;
+    nxt = nxt->next;
+  }
+  cur->next = pre;
+  s->top = cur;
+}
