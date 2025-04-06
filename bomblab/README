@@ -1,0 +1,44 @@
+***********
+1. Overview
+***********
+
+----
+1.1. Binary Bombs
+----
+A "binary bomb" is a Linux executable C program that consists of six
+"phases." Each phase expects the student to enter a particular string
+on stdin.  If the student enters the expected string, then that phase
+is "defused."  Otherwise the bomb "explodes" by printing "BOOM!!!".
+You only need to defuse the first 4 stages to get full marks. 
+Stages 5 and 6 are additional questions.
+
+----
+1.2. Solving Binary Bombs
+----
+In order to defuse the bomb, students must use a debugger, typically
+gdb or ddd, to disassemble the binary and single-step through the
+machine code in each phase. The idea is to understand what each
+assembly statement does, and then use this knowledge to infer the
+defusing string. Thus, they quickly learn to set breakpoints before
+each phase and the function that explodes the bomb. It's a great
+lesson and forces them to learn to use a debugger.
+
+----
+1.3. Useful Tips
+----
+- Disassembly instructions: objdump -d bomb > filename
+- Tips for GDB:
+  - 'gdb bomb': Debugging executable bomb using gdb
+  - 'disas func': Show the function 'func'
+  - 'x/s address': Print the content at 'address'
+  - 'info r': Show the content of registers
+  - 'r': Run the program, stop when it encounters a breakpoint, and wait for the user to enter the next instruction.
+  - 'c': Continue to run the program
+  - 'q': Quit debugging
+  - 'si': Single instruction execution, that is, only one instruction is executed at a time
+  - 'n': Single-step tracing program, when encountering a function call, will not enter the function body
+  - 's': Single-step debugging, when a function call is encountered, it will enter the function body
+  - 'b n': Set breakpoint at line n
+  - 'b func': Set breakpoint ar func
+  - You can search on the Internet to get more commands!
+  

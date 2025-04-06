@@ -1,0 +1,48 @@
+  
+000000000040100c <phase_4>:
+  40100c:	48 83 ec 18          	sub    $0x18,%rsp
+  401010:	48 8d 4c 24 0c       	lea    0xc(%rsp),%rcx
+  401015:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx
+  40101a:	be cf 25 40 00       	mov    $0x4025cf,%esi
+  40101f:	b8 00 00 00 00       	mov    $0x0,%eax
+  401024:	e8 c7 fb ff ff       	call   400bf0 <__isoc99_sscanf@plt>
+  401029:	83 f8 02             	cmp    $0x2,%eax
+  40102c:	75 07                	jne    401035 <phase_4+0x29> # 炸
+  40102e:	83 7c 24 08 0e       	cmpl   $0xe,0x8(%rsp) # n1 <= 14 才行
+  401033:	76 05                	jbe    40103a <phase_4+0x2e>
+  401035:	e8 00 04 00 00       	call   40143a <explode_bomb>
+  40103a:	ba 0e 00 00 00       	mov    $0xe,%edx # edx = 14
+  40103f:	be 00 00 00 00       	mov    $0x0,%esi # esi = 0
+  401044:	8b 7c 24 08          	mov    0x8(%rsp),%edi # edi = n1
+  401048:	e8 81 ff ff ff       	call   400fce <func4> # 初始调用: edx = 14, esi = 0, edi = n1
+  40104d:	85 c0                	test   %eax,%eax # 检查 eax 是否为 0
+  40104f:	75 07                	jne    401058 <phase_4+0x4c> # 不为 0 炸
+  401051:	83 7c 24 0c 00       	cmpl   $0x0,0xc(%rsp) 
+  401056:	74 05                	je     40105d <phase_4+0x51> # n2 = 0 才行
+  401058:	e8 dd 03 00 00       	call   40143a <explode_bomb>
+  40105d:	48 83 c4 18          	add    $0x18,%rsp
+  401061:	c3                   	ret    
+
+0000000000400fce <func4>:
+  400fce:	48 83 ec 08          	sub    $0x8,%rsp
+  400fd2:	89 d0                	mov    %edx,%eax
+  400fd4:	29 f0                	sub    %esi,%eax # eax = edx - esi
+  400fd6:	89 c1                	mov    %eax,%ecx
+  400fd8:	c1 e9 1f             	shr    $0x1f,%ecx 
+  400fdb:	01 c8                	add    %ecx,%eax # eax += eax >> 31(取符号位) 
+  400fdd:	d1 f8                	sar    %eax # eax >>= 1 (算术右移) 
+  400fdf:	8d 0c 30             	lea    (%rax,%rsi,1),%ecx
+  400fe2:	39 f9                	cmp    %edi,%ecx
+  400fe4:	7e 0c                	jle    400ff2 <func4+0x24> # if eax + esi <= n1 go ff2 else go next
+  400fe6:	8d 51 ff             	lea    -0x1(%rcx),%edx # edx = eax + esi - 1
+  400fe9:	e8 e0 ff ff ff       	call   400fce <func4> # 递归调用, 这里是 0 才可能出去
+  400fee:	01 c0                	add    %eax,%eax # eax *= 2
+  400ff0:	eb 15                	jmp    401007 <func4+0x39> go 007 # 这里最终出去
+  400ff2:	b8 00 00 00 00       	mov    $0x0,%eax eax = 0 # 另一条路
+  400ff7:	39 f9                	cmp    %edi,%ecx
+  400ff9:	7d 0c                	jge    401007 <func4+0x39> # if ecx >= n1 got 007 if go next
+  400ffb:	8d 71 01             	lea    0x1(%rcx),%esi # esi = ecx + 1
+  400ffe:	e8 cb ff ff ff       	call   400fce <func4>
+  401003:	8d 44 00 01          	lea    0x1(%rax,%rax,1),%eax # eax = 2 * eax + 1
+  401007:	48 83 c4 08          	add    $0x8,%rsp # 释放栈
+  40100b:	c3                   	ret    
