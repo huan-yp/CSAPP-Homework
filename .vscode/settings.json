@@ -3,6 +3,15 @@
         "iostream": "cpp",
         "time.h": "c",
         "defs.h": "c",
-        "string.h": "c"
-    }
+        "string.h": "c",
+        "errno.h": "c",
+        "csapp.h": "c",
+        "ctype.h": "c",
+        "signal.h": "c",
+        "stdarg.h": "c",
+        "unistd.h": "c"
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+    "codingcopilot.httpProxySettings": "manual",
+    "codingcopilot.httpProxyURL": " 172.18.224.1:7890"
 }

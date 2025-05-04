@@ -1,0 +1,16 @@
+make rtest01
+make rtest02
+make rtest03
+make rtest04
+make rtest05
+make rtest06
+make rtest07
+make rtest08
+make rtest09
+make rtest10
+make rtest11
+make rtest12
+make rtest13
+make rtest14
+make rtest15
+make rtest16
